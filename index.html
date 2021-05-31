@@ -65,8 +65,100 @@
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
+    let level = 1;
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     // TODO - Make buttons functional
+    errorBtns.forEach(element => {
+        if (element.innerHTML == 'Console Log Demo') {
+          element.addEventListener('click', event => {
+            console.log('hehehe that tickles :)')
+          })
+        } else if (element.innerHTML == 'Console Error Demo') {
+          element.addEventListener('click', event => {
+            console.error('ouch! that\'s an error!')
+          })
+        } else if (element.innerHTML == 'Console Dir') {
+          element.addEventListener('click', event => {
+            console.log('spilling my contents')
+            console.dir(element)
+          })
+        } else if (element.innerHTML == 'Console dirxml') {
+          element.addEventListener('click', event => {
+            console.log('blechhh')
+            console.dirxml(element)
+          })
+        } else if (element.innerHTML == 'Console Group Start') {
+          element.addEventListener('click', event => {
+            ++level
+            console.group('Level ' + level);
+            console.log('we at level ' + level)
+          })
+        } else if (element.innerHTML == 'Console Group End') {
+          element.addEventListener('click', event => {
+            if (level > 1) {
+              console.groupEnd()
+              --level;
+              console.log('We back at level '+ level)
+            } else {
+              console.log('We still at level '+ level)
+            }
+            
+          })
+        } else if (element.innerHTML == 'Console Table') {
+          element.addEventListener('click', event => {
+            var fav1 = { Favorite : "Food", is : "Pizza" }
+            var fav2 = { Favorite: "Drink", is : "Water" }
+            var fav3 = { Favorite : "Person", is : "Gantuya Larkins" }
+            console.table([fav1, fav2, fav3]);
+          })
+        } else if (element.innerHTML == 'Start Timer') {
+          element.addEventListener('click', event => {
+            console.log('I\'m counting from now')
+            console.time('timer')
+          })
+        } else if (element.innerHTML == 'End Timer') {
+          element.addEventListener('click', event => {
+            console.timeEnd('timer');
+            })
+        } else if (element.innerHTML == 'Console Trace') {
+          element.addEventListener('click', event => {
+            console.trace()
+          })
+        } else if (element.innerHTML == 'Trigger a Global Error') {
+          element.addEventListener('click', event => {
+            try {
+              sayWhatsup()
+            } catch(error) {
+              alert(error.message)
+            }
+            throw ClickedTheErrorButtonError
+          })
+        } 
+    })
+
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+      console.log('there was an error')
+      return false;
+    }
+
+    class ClickedTheErrorButtonError extends Error {
+      constructor(message) {
+        super(message)
+        this.name = "ClickedTheErrorButtonError"
+      }
+    }
+
+    function sayWhatsup() {
+      console.logg('yo watup ')
+    }
   </script>
+
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "d7bc463e292e4ae88439ccff74a0d217"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
 </body>
 </html>
